@@ -7,6 +7,10 @@ authors = ["SAWADA Tadashi <cesare@mayverse.jp>"]
 name = "json2mp"
 path = "src/json2mp.rs"
 
+[[bin]]
+name = "mp2json"
+path = "src/mp2json.rs"
+
 [dependencies]
 docopt = "0.7.0"
 rmp = "0.8.6"
