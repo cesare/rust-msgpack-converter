@@ -3,4 +3,14 @@ name = "msgpack-converter"
 version = "0.1.0"
 authors = ["SAWADA Tadashi <cesare@mayverse.jp>"]
 
+[[bin]]
+name = "json2mp"
+path = "src/json2mp.rs"
+
 [dependencies]
+docopt = "0.7.0"
+rmp = "0.8.6"
+rmp-serde = "0.13.1"
+rustc-serialize = "0.3.24"
+serde = "1.0.4"
+serde_json = "1.0.2"
