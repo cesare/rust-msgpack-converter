@@ -7,7 +7,6 @@ extern crate rmp;
 extern crate rmp_serde as rmps;
 
 use std::error::Error as StdError;
-use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 
@@ -16,7 +15,9 @@ use serde::Serialize;
 use rmps::Serializer;
 
 mod error;
+mod io;
 use error::Error;
+use io::{open_readable, open_writable};
 
 const USAGE: &'static str = "
 Usage:
@@ -43,26 +44,6 @@ fn load_json(readable: Box<Read>) -> Result<serde_json::Value, Error> {
 fn dump_as_msgpack(value: serde_json::Value, mut writable: Box<Write>) -> Result<(), Error> {
     let mut serializer = Serializer::new(&mut writable);
     value.serialize(&mut serializer).map_err(|e| Error::new(e.description()))
-}
-
-fn open_readable(filename: Option<String>) -> Box<Read> {
-    match filename {
-        Some(name) => {
-            let file = File::open(name).unwrap();
-            Box::new(file)
-        }
-        None => Box::new(std::io::stdin()),
-    }
-}
-
-fn open_writable(filename: Option<String>) -> Box<Write> {
-    match filename {
-        Some(name) => {
-            let file = File::create(name).unwrap();
-            Box::new(file)
-        }
-        None => Box::new(std::io::stdout()),
-    }
 }
 
 fn main() {

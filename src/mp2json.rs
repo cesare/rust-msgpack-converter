@@ -7,7 +7,6 @@ extern crate rmp;
 extern crate rmp_serde as rmps;
 
 use std::error::Error as StdError;
-use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 
@@ -16,7 +15,9 @@ use serde::Deserialize;
 use rmps::Deserializer;
 
 mod error;
+mod io;
 use error::Error;
+use io::{open_readable, open_writable};
 
 const USAGE: &'static str = "
 Usage:
@@ -51,26 +52,6 @@ fn dump_as_json(value: &serde_json::Value,
         serde_json::to_writer_pretty(writable, value).map_err(|e| Error::new(e.description()))
     } else {
         serde_json::to_writer(writable, value).map_err(|e| Error::new(e.description()))
-    }
-}
-
-fn open_readable(filename: Option<String>) -> Box<Read> {
-    match filename {
-        Some(name) => {
-            let file = File::open(name).unwrap();
-            Box::new(file)
-        }
-        None => Box::new(std::io::stdin()),
-    }
-}
-
-fn open_writable(filename: Option<String>) -> Box<Write> {
-    match filename {
-        Some(name) => {
-            let file = File::create(name).unwrap();
-            Box::new(file)
-        }
-        None => Box::new(std::io::stdout()),
     }
 }
 
